@@ -185,7 +185,7 @@
   <script>
     // Get license key and email from URL parameters (sent by Lemon Squeezy)
     const urlParams = new URLSearchParams(window.location.search);
-    const licenseKey = urlParams.get('license_key') || urlParams.get('licence_key');
+    const licenseKey = urlParams.get('license_key') || urlParams.get('licence_key') || urlParams.get('license');
     const email = urlParams.get('email');
 
     // Display license key
