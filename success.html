@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You - Tab Manager Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      color: #202124;
+      font-size: 32px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .license-box {
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .license-key {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #667eea;
+      margin: 16px 0;
+      padding: 12px;
+      background: white;
+      border-radius: 6px;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 8px 4px;
+    }
+
+    .copy-btn:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+    }
+
+    .steps {
+      text-align: left;
+      margin: 32px 0;
+      padding: 24px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .step {
+      margin: 16px 0;
+      padding-left: 32px;
+      position: relative;
+    }
+
+    .step::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .email-note {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 16px;
+    }
+
+    .support {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .support a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .support a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-icon">🎉</div>
+    <h1>Welcome to Tab Manager Pro!</h1>
+    <p>Thank you for upgrading! Your payment has been processed successfully.</p>
+
+    <div class="license-box">
+      <p><strong>Your License Key:</strong></p>
+      <div class="license-key" id="licenseKey">Loading...</div>
+      <button class="copy-btn" onclick="copyLicense()">📋 Copy License Key</button>
+    </div>
+
+    <div class="steps">
+      <h3 style="margin-bottom: 16px;">Next Steps:</h3>
+      <div class="step" data-step="1">
+        <strong>Copy your license key</strong> using the button above
+      </div>
+      <div class="step" data-step="2">
+        <strong>Open Tab Manager Pro</strong> extension in Chrome (click the icon in your browser toolbar)
+      </div>
+      <div class="step" data-step="3">
+        <strong>Click "Upgrade to Pro"</strong> in the extension popup
+      </div>
+      <div class="step" data-step="4">
+        <strong>Paste your license key</strong> and activate your Pro account
+      </div>
+    </div>
+
+    <div class="email-note">
+      📧 A confirmation email with your license key has been sent to <span id="userEmail">your email</span>
+    </div>
+
+    <div class="support">
+      Need help? Contact us at <a href="mailto:support@tabmanagerpro.com">support@tabmanagerpro.com</a>
+    </div>
+  </div>
+
+  <script>
+    // Get license key and email from URL parameters (sent by Lemon Squeezy)
+    const urlParams = new URLSearchParams(window.location.search);
+    const licenseKey = urlParams.get('license_key') || urlParams.get('licence_key');
+    const email = urlParams.get('email');
+
+    // Display license key
+    if (licenseKey) {
+      document.getElementById('licenseKey').textContent = licenseKey;
+    } else {
+      document.getElementById('licenseKey').textContent = 'No license key found in URL';
+      document.getElementById('licenseKey').style.color = '#dc3545';
+    }
+
+    // Display email if provided
+    if (email) {
+      document.getElementById('userEmail').textContent = email;
+    }
+
+    // Copy license key to clipboard
+    function copyLicense() {
+      const licenseKeyText = document.getElementById('licenseKey').textContent;
+      
+      navigator.clipboard.writeText(licenseKeyText).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.background = '#10b981';
+        
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 2000);
+      }).catch(err => {
+        alert('Failed to copy. Please select and copy manually.');
+      });
+    }
+  </script>
+</body>
+</html>
