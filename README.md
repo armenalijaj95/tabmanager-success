@@ -165,3 +165,5 @@ Need help? Contact: armenalijaj2012@gmail.com
 ## 📄 License
 
 © 2025 Armen Alijaj
+
+<!-- Deployment trigger -->
