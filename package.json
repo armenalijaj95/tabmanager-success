@@ -1,7 +1,6 @@
 {
   "name": "tabmanager-success",
   "version": "1.0.0",
-  "type": "module",
   "description": "Tab Manager Pro success page and license validation API",
   "main": "api/validate-license.js",
   "scripts": {
