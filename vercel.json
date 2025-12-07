@@ -11,8 +11,5 @@
       "src": "/api/(.*)",
       "dest": "/api/$1"
     }
-  ],
-  "env": {
-    "LEMON_SQUEEZY_API_KEY": "@lemon-squeezy-api-key"
-  }
+  ]
 }
