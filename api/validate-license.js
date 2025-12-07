@@ -45,26 +45,15 @@ module.exports = async function handler(req, res) {
     }
 
     // Validate with Lemon Squeezy API
-    const lemonSqueezyApiKey = process.env.LEMON_SQUEEZY_API_KEY;
-    
-    if (!lemonSqueezyApiKey) {
-      console.error('LEMON_SQUEEZY_API_KEY not configured');
-      return res.status(500).json({ 
-        valid: false, 
-        error: 'Server configuration error' 
-      });
-    }
-
-    // Call Lemon Squeezy License API
-    // https://docs.lemonsqueezy.com/api/license-keys#activate-a-license-key
+    // NOTE: The License API is separate from the main API
+    // It uses form-urlencoded, not JSON
     const response = await fetch('https://api.lemonsqueezy.com/v1/licenses/validate', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${lemonSqueezyApiKey}`
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({
+      body: new URLSearchParams({
         license_key: licenseKey
       })
     });
@@ -72,17 +61,17 @@ module.exports = async function handler(req, res) {
     const data = await response.json();
 
     // Check if license is valid and active
-    if (response.ok && data.valid) {
+    if (data.valid === true) {
       return res.status(200).json({
         valid: true,
-        status: data.meta?.status || 'active',
+        status: data.license_key?.status || 'active',
         customer: data.meta?.customer_email,
-        expires: data.meta?.expires_at
+        expires: data.license_key?.expires_at
       });
     } else {
       return res.status(200).json({
         valid: false,
-        status: data.meta?.status || 'invalid',
+        status: data.license_key?.status || 'invalid',
         error: data.error || 'License validation failed'
       });
     }
@@ -91,7 +80,8 @@ module.exports = async function handler(req, res) {
     console.error('License validation error:', error);
     return res.status(500).json({ 
       valid: false, 
-      error: 'Internal server error' 
+      error: 'Internal server error',
+      details: error.message
     });
   }
 };
